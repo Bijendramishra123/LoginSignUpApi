@@ -28,12 +28,9 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// 🔹 Enable Swagger in Development environment
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// ✅ 🔹 Enable Swagger ALWAYS (Production + Development)
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // 🔹 Enable CORS
 app.UseCors(MyAllowSpecificOrigins);
