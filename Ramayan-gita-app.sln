@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ramayan-gita-app", "Ramayan-gita-app.csproj", "{6190B6D2-59B3-48F0-8F3A-A5F1C8FC37EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6190B6D2-59B3-48F0-8F3A-A5F1C8FC37EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6190B6D2-59B3-48F0-8F3A-A5F1C8FC37EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6190B6D2-59B3-48F0-8F3A-A5F1C8FC37EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6190B6D2-59B3-48F0-8F3A-A5F1C8FC37EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E0CDE4A7-07EF-4970-BEE7-BB83FDEF8C5F}
+	EndGlobalSection
+EndGlobal
