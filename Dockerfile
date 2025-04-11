@@ -1,21 +1,19 @@
-# STEP 1: Use .NET SDK image to build the app
+# Use the official ASP.NET Core SDK image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy everything and restore dependencies
+# Copy csproj and restore as distinct layers
+COPY ["Ramayan-gita-app.csproj", "./"]
+RUN dotnet restore "Ramayan-gita-app.csproj"
+
+# Copy everything else and build
 COPY . .
-RUN dotnet restore
+RUN dotnet publish "Ramayan-gita-app.csproj" -c Release -o /app/publish
 
-# Build and publish the app
-RUN dotnet publish -c Release -o /app/publish
-
-# STEP 2: Use .NET Runtime image to run the app
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-
-# Expose port 80 for the app
-EXPOSE 80
-
-# Start the app
 ENTRYPOINT ["dotnet", "Ramayan-gita-app.dll"]
