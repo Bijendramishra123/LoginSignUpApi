@@ -2,17 +2,12 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 Add controller services
+// 🔹 Add services
 builder.Services.AddControllers();
-
-// 🔹 Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// 🔹 Dependency Injection for UserDataAccess (custom service)
 builder.Services.AddScoped<UserDataAccess>();
 
-// 🔹 Define named CORS policy
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
@@ -20,7 +15,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173") // Frontend URL
+            policy.WithOrigins("http://localhost:5173")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -28,21 +23,20 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// ✅ 🔹 Enable Swagger ALWAYS (Production + Development)
+// 🔹 Enable Swagger (Always)
 app.UseSwagger();
 app.UseSwaggerUI();
 
 // 🔹 Enable CORS
 app.UseCors(MyAllowSpecificOrigins);
 
-// 🔹 (Optional) HTTPS Redirection — Uncomment in production
+// 🔹 Optional HTTPS Redirection
 // app.UseHttpsRedirection();
 
-// 🔹 Enable routing and authorization
+// 🔹 Authorization
 app.UseAuthorization();
 
-// 🔹 Map attribute-based controllers (e.g., /api/auth)
+// 🔹 Map Controllers
 app.MapControllers();
 
-// 🔹 Start the application
 app.Run();
