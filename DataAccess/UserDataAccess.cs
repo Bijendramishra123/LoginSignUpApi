@@ -1,55 +1,42 @@
-﻿using Microsoft.Data.SqlClient; 
 using Ramayan_gita_app.Models;
+using System.Linq;
 
 namespace Ramayan_gita_app.DataAccess
 {
     public class UserDataAccess
     {
-        private readonly string? _connectionString;
+        private readonly ApplicationDbContext _context;
 
-        public UserDataAccess(IConfiguration configuration)
+        public UserDataAccess(ApplicationDbContext context)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _context = context;
         }
 
-        // ✅ REGISTER Method (Insert FullName, Email, PasswordHash)
         public bool Register(User user)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            try
             {
-                string query = "INSERT INTO Users (FullName, Email, PasswordHash) VALUES (@FullName, @Email, @PasswordHash)";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@FullName", user.FullName);
-                cmd.Parameters.AddWithValue("@Email", user.Email);
-                cmd.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
-                conn.Open();
-                int rows = cmd.ExecuteNonQuery();
-                return rows > 0;
+                if (_context.Users.Any(u => u.Email == user.Email))
+                    return false;
+
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        // ✅ LOGIN Method (match Email and PasswordHash)
         public User? Login(string email, string passwordHash)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            try
             {
-                string query = "SELECT * FROM Users WHERE Email = @Email AND PasswordHash = @PasswordHash";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@PasswordHash", passwordHash);
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    return new User
-                    {
-                        UserID = (int)reader["UserID"],
-                        FullName = reader["FullName"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        PasswordHash = reader["PasswordHash"].ToString(),
-                        CreatedAt = (DateTime)reader["CreatedAt"]
-                    };
-                }
+                return _context.Users.FirstOrDefault(u => u.Email == email && u.PasswordHash == passwordHash);
+            }
+            catch
+            {
                 return null;
             }
         }
